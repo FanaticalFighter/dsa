@@ -1,0 +1,12 @@
+The array a is passed to the function f as a pointer. The function f then goes into this pointer's data storage location and modifies the data there, so when we look at the end result the array is modified with every term having 2 added to it.
+
+The term y is passed via value, so a copy of b is created in f. b's value in main() is unaffected.
+
+Therefore the output is:
+
+2
+4
+6
+8
+10
+16
