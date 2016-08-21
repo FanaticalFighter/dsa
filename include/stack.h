@@ -20,7 +20,7 @@ typedef GSList* Stack;
 // Returns a pointer to a new, empty Stack
 // Do NOT dereference this. Basically, it is just syntax over NULL
 // So dereferencing will be a BAD idea
-Stack* StackNew()
+Stack StackNew()
 {
 	return NULL;
 }
