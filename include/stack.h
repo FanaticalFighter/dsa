@@ -13,36 +13,30 @@
  * as a seperate thing from a linked list.
  * And makes for a more readable code
  */
-typedef GSList *stack;
+typedef GSList* stack;
 
 /*
  * Returns a pointer to a new, empty stack
  * Do NOT dereference this. Basically, it is just syntax over NULL
  * So dereferencing will be a BAD idea
  */
-#define stack_new() \
-	NULL
+stack *stack_new()
+{
+	return NULL;
+}
 
 /*
- * Pushes d (MUST be a pointer) to the stack s
- * An example of calling this will be:
- * stack *s = stack_new();
- * ...
- * stack_push(s, d);
+ * Pushes data onto the stack s
  */
-#define stack_push(s, d) \
-	s = g_slist_prepend(s, d)
+void stack_push(stack** s, void* data)
+{
+	*s = g_slist_prepend(*s, data);
+}
 
-/*
- * Pops the stack s
- * Returns the data in the stack and casts it as the type t as p
- * An example of calling this will be:
- * stack *s = stack_new();
- * ...
- * int *p;
- * stack_pop(s, int, p);
- */
-#define stack_pop(s, t, v) \
-	v = (t*) s->data; \
-	s = g_slist_delete_link(s, s)
+void* stack_pop(stack** s)
+{
+	void* data = *s->data;
+	*s = g_slist_delete_link(s, s);
+	return data;
+}
 
