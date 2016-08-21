@@ -13,12 +13,18 @@ typedef struct _Move
 	short dest; // The destination for the disk
 } Move;
 
+typedef struct _Peg
+{
+	short pegOrder; // Is the peg the 0th, 1st, or 2ng peg?
+	Stack stack; // The stack of the disks in the peg
+} Peg;
+
 // Solves the tower recursively.
 // disk is the top level disk in the stack
 // source is the source stack, where the disk is from
 // dest is the destination stack
 // spare is the spare stack
-void SolveTower(int disk, Stack* source, Stack* dest, Stack* spare);
+void SolveTower(int disk, Peg* source, Peg* dest, Peg* spare, GSList* moveTrace);
 
 int main()
 {
@@ -27,44 +33,47 @@ int main()
 	scanf("%d", &numberOfDisks);
 
 	// Initialize the source peg involved in the tower of Hanoi problem
-	Stack source = StackNew();
+	Peg source;
+	source.pegOrder = 0;
+	source.stack = StackNew();
 	int i;
 	for (i = 0; i < numberOfDisks; i++)
 	{
 		// The stack will only take pointers, so this is needed
 		int* valueOfDisk = malloc(sizeof(*valueOfDisk));
 		*valueOfDisk = numberOfDisks - i - 1;
-		StackPush(&source, valueOfDisk);
+		StackPush(&source.stack, valueOfDisk);
 	}
 
-	Stack dest = StackNew();
-	Stack spare = StackNew();
+	Peg dest;
+	dest.stack = StackNew();
+	Peg spare;
+	spare.stack = StackNew();
 
-	SolveTower(numberOfDisks - 1, &source, &dest, &spare);
-
-	printf("%d\t%d\t%d\n", g_slist_length(source), g_slist_length(dest), g_slist_length(spare));
+	GSList* moveTrace = NULL;
+	SolveTower(numberOfDisks - 1, &source, &dest, &spare, moveTrace);
 
 	return 0;
 }
 
 // Helper function for SolveTower
 // Moves the top disk from source to the destination
-void MoveDisk(Stack* source, Stack* dest)
+void MoveDisk(Peg* source, Peg* dest, GSList *moveTrace)
 {
-	int* disk = StackPop(source);
-	StackPush(dest, disk);
+	int* disk = StackPop(&source->stack);
+	StackPush(&dest->stack, disk);
 }
 
-void SolveTower(int disk, Stack* source, Stack* dest, Stack* spare)
+void SolveTower(int disk, Peg* source, Peg* dest, Peg* spare, GSList* moveTrace)
 {
 	if (disk == 0)
 	{
-		MoveDisk(source, dest);
+		MoveDisk(source, dest, moveTrace);
 	}
 	else
 	{
-		SolveTower(disk - 1, source, spare, dest);
-		MoveDisk(source, dest);
-		SolveTower(disk - 1, spare, dest, source);
+		SolveTower(disk - 1, source, spare, dest, moveTrace);
+		MoveDisk(source, dest, moveTrace);
+		SolveTower(disk - 1, spare, dest, source, moveTrace);
 	}
 }
