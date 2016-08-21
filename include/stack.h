@@ -27,16 +27,16 @@ Stack* StackNew()
 
 
 // Pushes data onto the Stack s
-void StackPush(Stack** s, void* data)
+void StackPush(Stack* s, void* data)
 {
 	*s = g_slist_prepend(*s, data);
 }
 
 // Pops the Stack
-void* StackPop(Stack** s)
+void* StackPop(Stack* s)
 {
-	void* data = *s->data;
-	*s = g_slist_delete_link(s, s);
+	void* data = (*s)->data;
+	*s = g_slist_delete_link(*s, *s);
 	return data;
 }
 
