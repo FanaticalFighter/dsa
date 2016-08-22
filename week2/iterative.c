@@ -80,17 +80,23 @@ void MoveDisk(Peg* source, Peg* dest)
 	printf("Moved from stack %d to stack %d\n", source->pegOrder + 1, dest->pegOrder + 1);
 }
 
+Move* NewMove(Peg* source, Peg* dest, Peg* spare, int disk)
+{
+	Move* move = malloc(sizeof(*move));
+	move->source = source;
+	move->dest = dest;
+	move->spare = spare;
+	move->disk = disk;
+	move->split = disk ? TRUE : FALSE;
+	return move;
+}
+
 void SolveTower(int disk, Peg* source, Peg* dest, Peg* spare)
 {
 	Stack movesToDo = StackNew();
 
 	// Add the move for moving the biggest disk to the stack.
-	Move* moveBiggestDiskToDest = malloc(sizeof(*moveBiggestDiskToDest));
-	moveBiggestDiskToDest->source = source;
-	moveBiggestDiskToDest->dest = dest;
-	moveBiggestDiskToDest->spare = spare;
-	moveBiggestDiskToDest->disk = disk;
-	moveBiggestDiskToDest->split = TRUE;
+	Move* moveBiggestDiskToDest = NewMove(source, dest, spare, disk);
 	StackPush(&movesToDo, moveBiggestDiskToDest);
 
 	while (!StackIsEmpty(movesToDo))
@@ -103,28 +109,14 @@ void SolveTower(int disk, Peg* source, Peg* dest, Peg* spare)
 		}
 		else
 		{
-			Move* moveSmallerDisksBack = malloc(sizeof(*moveSmallerDisksBack));
-			moveSmallerDisksBack->source = move->spare;
-			moveSmallerDisksBack->dest = move->dest;
-			moveSmallerDisksBack->spare = move->source;
-			moveSmallerDisksBack->disk = move->disk - 1;
-			moveSmallerDisksBack->split = !moveSmallerDisksBack->disk ? FALSE : TRUE;
+			Move* moveSmallerDisksBack = NewMove(move->spare, move->dest, move->source, move->disk - 1);
 			StackPush(&movesToDo, moveSmallerDisksBack);
 
-			Move* moveBigDiskToDest = malloc(sizeof(*moveBigDiskToDest));
-			moveBigDiskToDest->source = move->source;
-			moveBigDiskToDest->dest = move->dest;
-			moveBigDiskToDest->spare = move->spare;
-			moveBigDiskToDest->disk = move->disk;
-			moveBigDiskToDest->split = FALSE;
+			Move* moveBigDiskToDest = NewMove(move->source, move->dest, move->spare, 0); 	// The disk being zero here just means
+																							// That the program should immediately execute this
 			StackPush(&movesToDo, moveBigDiskToDest);
 
-			Move* moveToSpare = malloc(sizeof(*moveToSpare));
-			moveToSpare->source = move->source;
-			moveToSpare->dest = move->spare;
-			moveToSpare->spare = move->dest;
-			moveToSpare->disk = move->disk - 1;
-			moveToSpare->split = !moveToSpare->disk ? FALSE : TRUE;
+			Move* moveToSpare = NewMove(move->source, move->spare, move->dest, move->disk - 1);
 			StackPush(&movesToDo, moveToSpare);
 		}
 	}
