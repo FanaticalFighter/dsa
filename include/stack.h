@@ -33,8 +33,17 @@ void StackPush(Stack* s, void* data)
 }
 
 // Pops the Stack
+// A NULL from this function does NOT mean that the Stack is empty
+// It might be that the data in the stack was NULL
+// Use StackIsEmpty for checking to make sure
 void* StackPop(Stack* s)
 {
+	// If the stack is empty, there is no data to return
+	if (*s == NULL)
+	{
+		return NULL;
+	}
+
 	void* data = (*s)->data;
 	*s = g_slist_delete_link(*s, *s);
 	return data;
@@ -44,7 +53,7 @@ void* StackPop(Stack* s)
 // Returns false otherwise
 gboolean StackIsEmpty(Stack s)
 {
-	if (s = NULL)
+	if (s == NULL)
 	{
 		return TRUE;
 	}
