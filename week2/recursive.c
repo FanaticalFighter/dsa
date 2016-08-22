@@ -24,7 +24,7 @@ typedef struct _Peg
 // source is the source stack, where the disk is from
 // dest is the destination stack
 // spare is the spare stack
-void SolveTower(int disk, Peg* source, Peg* dest, Peg* spare, GSList* moveTrace);
+void SolveTower(int disk, Peg* source, Peg* dest, Peg* spare);
 
 int main()
 {
@@ -46,34 +46,40 @@ int main()
 	}
 
 	Peg dest;
+	dest.pegOrder = 1;
 	dest.stack = StackNew();
+
 	Peg spare;
+	spare.pegOrder = 2;
 	spare.stack = StackNew();
 
-	GSList* moveTrace = NULL;
-	SolveTower(numberOfDisks - 1, &source, &dest, &spare, moveTrace);
+	SolveTower(numberOfDisks - 1, &source, &dest, &spare);
 
 	return 0;
 }
 
 // Helper function for SolveTower
 // Moves the top disk from source to the destination
-void MoveDisk(Peg* source, Peg* dest, GSList *moveTrace)
+void MoveDisk(Peg* source, Peg* dest)
 {
+	// Move the disk
 	int* disk = StackPop(&source->stack);
 	StackPush(&dest->stack, disk);
+
+	// Write the stack trace
+	printf("Moved from stack %d to stack %d\n", source->pegOrder + 1, dest->pegOrder + 1);
 }
 
-void SolveTower(int disk, Peg* source, Peg* dest, Peg* spare, GSList* moveTrace)
+void SolveTower(int disk, Peg* source, Peg* dest, Peg* spare)
 {
 	if (disk == 0)
 	{
-		MoveDisk(source, dest, moveTrace);
+		MoveDisk(source, dest);
 	}
 	else
 	{
-		SolveTower(disk - 1, source, spare, dest, moveTrace);
-		MoveDisk(source, dest, moveTrace);
-		SolveTower(disk - 1, spare, dest, source, moveTrace);
+		SolveTower(disk - 1, source, spare, dest);
+		MoveDisk(source, dest);
+		SolveTower(disk - 1, spare, dest, source);
 	}
 }
