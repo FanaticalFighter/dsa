@@ -40,3 +40,16 @@ void* StackPop(Stack* s)
 	return data;
 }
 
+// Returns true if the stack empty
+// Returns false otherwise
+gboolean StackIsEmpty(Stack s)
+{
+	if (s = NULL)
+	{
+		return TRUE;
+	}
+	else
+	{
+		return FALSE;
+	}
+}
