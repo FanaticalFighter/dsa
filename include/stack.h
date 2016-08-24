@@ -12,13 +12,14 @@
 
 
 // This obscures the GSList implementation so that a Stack can be seen
-// as a seperate thing from a linked list.
+// as a seperate data structure from a GLib linked list.
 // And makes for a more readable code
 typedef GSList* Stack;
 
 
 // Returns a pointer to a new, empty Stack
 // Do NOT dereference this. Basically, it is just syntax over NULL
+// Actually, don't EVER dereference a Stack. Only use the functions provided here
 // So dereferencing will be a BAD idea
 Stack StackNew()
 {
@@ -36,6 +37,8 @@ void StackPush(Stack* s, void* data)
 // A NULL from this function does NOT mean that the Stack is empty
 // It might be that the data in the stack was NULL
 // Use StackIsEmpty for checking to make sure
+// Also, if this data was malloced before entering the stack, remember to
+// free it.
 void* StackPop(Stack* s)
 {
 	// If the stack is empty, there is no data to return
