@@ -26,6 +26,19 @@ Stack StackNew()
 	return NULL;
 }
 
+// Returns true if the stack empty
+// Returns false otherwise
+gboolean StackIsEmpty(Stack s)
+{
+	if (s == NULL)
+	{
+		return TRUE;
+	}
+	else
+	{
+		return FALSE;
+	}
+}
 
 // Pushes data onto the Stack s
 void StackPush(Stack* s, void* data)
@@ -42,7 +55,7 @@ void StackPush(Stack* s, void* data)
 void* StackPop(Stack* s)
 {
 	// If the stack is empty, there is no data to return
-	if (StackIsEmpty())
+	if (StackIsEmpty(*s))
 	{
 		return NULL;
 	}
@@ -52,26 +65,13 @@ void* StackPop(Stack* s)
 	return data;
 }
 
+// Returns a constant pointer to the data at top of the stack
 const void* StackPeak(Stack *s)
 {
-	if (StackIsEmpty())
+	if (StackIsEmpty(*s))
 	{
 		return NULL;
 	}
 
-	return (*)->data
-}
-
-// Returns true if the stack empty
-// Returns false otherwise
-gboolean StackIsEmpty(Stack s)
-{
-	if (s == NULL)
-	{
-		return TRUE;
-	}
-	else
-	{
-		return FALSE;
-	}
+	return (*s)->data;
 }
