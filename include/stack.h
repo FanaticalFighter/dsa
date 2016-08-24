@@ -42,7 +42,7 @@ void StackPush(Stack* s, void* data)
 void* StackPop(Stack* s)
 {
 	// If the stack is empty, there is no data to return
-	if (*s == NULL)
+	if (StackIsEmpty())
 	{
 		return NULL;
 	}
