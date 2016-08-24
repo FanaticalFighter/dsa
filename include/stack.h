@@ -52,6 +52,7 @@ void* StackPop(Stack* s)
 	return data;
 }
 
+// Returns a constant pointer to the data at top of the stack
 const void* StackPeak(Stack *s)
 {
 	if (StackIsEmpty())
