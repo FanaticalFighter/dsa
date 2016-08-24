@@ -52,6 +52,16 @@ void* StackPop(Stack* s)
 	return data;
 }
 
+const void* StackPeak(Stack *s)
+{
+	if (StackIsEmpty())
+	{
+		return NULL;
+	}
+
+	return (*)->data
+}
+
 // Returns true if the stack empty
 // Returns false otherwise
 gboolean StackIsEmpty(Stack s)
