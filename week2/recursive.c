@@ -6,13 +6,6 @@
 
 #include "../include/stack.h"
 
-// This struct represents a movement of the disks
-typedef struct _Move
-{
-	short source; // The source for the disk
-	short dest; // The destination for the disk
-} Move;
-
 typedef struct _Peg
 {
 	short pegOrder; // Is the peg the 0th, 1st, or 2ng peg?
