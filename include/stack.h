@@ -21,30 +21,14 @@ typedef GSList* Stack;
 // Do NOT dereference this. Basically, it is just syntax over NULL
 // Actually, don't EVER dereference a Stack. Only use the functions provided here
 // So dereferencing will be a BAD idea
-Stack StackNew()
-{
-	return NULL;
-}
+Stack StackNew();
 
 // Returns true if the stack empty
 // Returns false otherwise
-gboolean StackIsEmpty(Stack s)
-{
-	if (s == NULL)
-	{
-		return TRUE;
-	}
-	else
-	{
-		return FALSE;
-	}
-}
+gboolean StackIsEmpty(Stack s);
 
 // Pushes data onto the Stack s
-void StackPush(Stack* s, void* data)
-{
-	*s = g_slist_prepend(*s, data);
-}
+void StackPush(Stack* s, void* data);
 
 // Pops the Stack
 // A NULL from this function does NOT mean that the Stack is empty
@@ -52,26 +36,7 @@ void StackPush(Stack* s, void* data)
 // Use StackIsEmpty for checking to make sure
 // Also, if this data was malloced before entering the stack, remember to
 // free it.
-void* StackPop(Stack* s)
-{
-	// If the stack is empty, there is no data to return
-	if (StackIsEmpty(*s))
-	{
-		return NULL;
-	}
-
-	void* data = (*s)->data;
-	*s = g_slist_delete_link(*s, *s);
-	return data;
-}
+void* StackPop(Stack* s);
 
 // Returns a constant pointer to the data at top of the stack
-const void* StackPeak(Stack *s)
-{
-	if (StackIsEmpty(*s))
-	{
-		return NULL;
-	}
-
-	return (*s)->data;
-}
+const void* StackPeak(Stack *s);
