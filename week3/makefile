@@ -6,20 +6,23 @@ CC=gcc
 
 FLAGS=-Wall -std=gnu99 `pkg-config --libs --cflags glib-2.0`
 
-DFLAGS=-g -Wextra -Werror
+DFLAGS=-g -Wextra -Werror -DDEBUG
 
 RM=rm
 RMFLAGS=-f
 
-all: josephus
+all: josephus queue
 
 # clean completely wipes directory of all executables and objects
 clean:
-	$(RM) $(RMFLAGS) josephus
+	$(RM) $(RMFLAGS) josephus queue
 
-debug: CFLAGS+=$(DFLAGS)
-debug: LFLAGS+=$(DFLAGS)
+debug: FLAGS+=$(DFLAGS)
+debug: FLAGS+=$(DFLAGS)
 debug: all
 
 josephus:
-	$(CC) $(FLAGS) ../include/stack.c josephus.c -o josephus
+	$(CC) $(FLAGS) josephus.c -o josephus
+
+queue:
+	$(CC) $(FLAGS) ../include/stack.c queue.c -o queue
