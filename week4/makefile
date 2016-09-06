@@ -11,15 +11,18 @@ DFLAGS=-g -Wextra -Werror -DDEBUG
 RM=rm
 RMFLAGS=-rf
 
-all: balance stack_reversal
+all: balance stack_reversal stackWithQueue
 
 # clean completely wipes directory of all executables and objects
 clean:
-	$(RM) $(RMFLAGS) balance stack_reversal *.dSYM
+	$(RM) $(RMFLAGS) balance stack_reversal stackWithQueue *.dSYM
 
 debug: FLAGS+=$(DFLAGS)
 debug: FLAGS+=$(DFLAGS)
 debug: all
+
+stackWithQueue:
+	$(CC) $(FLAGS) ../include/stack.c stackWithQueue.c -o stackWithQueue
 
 balance:
 	$(CC) $(FLAGS) ../include/stack.c balance.c -o balance
