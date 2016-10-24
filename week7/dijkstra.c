@@ -9,6 +9,8 @@ typedef struct _Edge {
 	double weight;
 } Edge;
 
+// Finds the minimum distance position in distances, ignoring the elements which
+// have already been processed
 int MinDistance(double* distances, gboolean* processed, int size)
 {
 	int min = INT_MAX;
@@ -24,8 +26,11 @@ int MinDistance(double* distances, gboolean* processed, int size)
 	return minPosition;
 }
 
+// Finds the distances to all paths defined by the graph defined by the given
+// adjacency list, from source
 double* FindShortestPaths(GSList** adjacency, int numberOfNodes, int source)
 {
+	// All distances are initially infinty and nothing has been processed
 	double* distances = malloc(numberOfNodes * sizeof(*distances));
 	gboolean* processed = malloc(numberOfNodes * sizeof(*processed));
 	for (int i = 0; i < numberOfNodes; i++) {
@@ -34,6 +39,8 @@ double* FindShortestPaths(GSList** adjacency, int numberOfNodes, int source)
 	}
 	distances[source] = 0;
 
+	// Find least distance element, and relax connected edges if needed
+	// Do this until all edges have been processed
 	for (int i = 0; i < numberOfNodes; i++) {
 		int minVertex = MinDistance(distances, processed, numberOfNodes);
 		processed[minVertex] = TRUE;

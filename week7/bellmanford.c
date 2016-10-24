@@ -14,6 +14,7 @@ typedef struct _Edge {
 
 double* BellmanFord(GSList** adjacency, int numberOfVertices, int source)
 {
+	// Stores the distances for each vertex
 	double* distances = malloc(numberOfVertices * sizeof(*adjacency));
 
 	for (int i = 0; i < numberOfVertices; i++) {
@@ -23,10 +24,12 @@ double* BellmanFord(GSList** adjacency, int numberOfVertices, int source)
 
 	for (int i = 0; i < numberOfVertices - 1; i++) {
 		for (int j = 0; j < numberOfVertices; j++) {
+			// If the distance is the maximum possible, there's no use to examine this now
 			if(distances[j] == DBL_MAX) {
 				break;
 			}
 
+			// Relax all connected edges if needed
 			GSList* edgesIt = adjacency[j];
 			while(edgesIt != NULL) {
 				Edge* e = (Edge*) edgesIt->data;
@@ -42,6 +45,7 @@ double* BellmanFord(GSList** adjacency, int numberOfVertices, int source)
 	return distances;
 }
 
+// Finds the index of the minimum element in arr
 int MinIndex(double* arr, int size)
 {
 	double min = DBL_MAX;
